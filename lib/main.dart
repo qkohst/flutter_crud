@@ -18,6 +18,14 @@ class _LoginState extends State<Login> {
   String username, password;
   final _key = new GlobalKey<FormState>();
 
+  bool _secureText = true;
+
+  showHide() {
+    setState(() {
+      _secureText = !_secureText;
+    });
+  }
+
   check() {
     final form = _key.currentState;
     if (form.validate()) {
@@ -37,7 +45,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Flutter CRUD"),
+      ),
       body: Form(
         key: _key,
         child: ListView(
@@ -54,9 +64,16 @@ class _LoginState extends State<Login> {
               decoration: InputDecoration(labelText: "Username"),
             ),
             TextFormField(
-              obscureText: true,
+              obscureText: _secureText,
               onSaved: (e) => password = e,
-              decoration: InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(
+                labelText: "Password",
+                suffixIcon: IconButton(
+                  onPressed: showHide,
+                  icon: Icon(
+                      _secureText ? Icons.visibility_off : Icons.visibility),
+                ),
+              ),
             ),
             MaterialButton(
               onPressed: () {
